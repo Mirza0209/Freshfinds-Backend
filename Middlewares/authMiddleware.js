@@ -7,6 +7,11 @@ const authMiddleware = async (req, res, next) => {
   const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
   // console.log(token);
 
+  console.log("Incoming origin:", req.headers.origin);
+  console.log("Cookies:", req.cookies);
+
+  console.log("Token from cookie:", token);
+
   if (!token) {
     return res.status(401).json({ message: "No token, authorization denied" });
   }
@@ -17,7 +22,7 @@ const authMiddleware = async (req, res, next) => {
     // console.log(decoded);
 
     const user = await User.findById(decoded.userId);
-    // console.log(user);
+    console.log(user);
 
     // Attach the user data to req.user
     req.user = user;
