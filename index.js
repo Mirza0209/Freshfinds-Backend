@@ -29,7 +29,7 @@ app.use(cookieParser()); // Use cookie-parser
 app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));
 
 const corsOptions = {
-  origin: process.env.ORIGIN,
+  origin: process.env.ORIGIN || "https://freshfinds-frontend-gilt.vercel.app",
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 };
