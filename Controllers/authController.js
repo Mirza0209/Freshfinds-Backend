@@ -106,12 +106,14 @@ const login = async (req, res) => {
     existingUser.isOnline = true;
     await existingUser.save();
 
+    const isProduction = process.env.NODE_ENV === "production";
     res
       .status(200)
       .cookie("token", token, {
-        httpOnly: true, // Secure cookie (not accessible from client-side JavaScript)
-        secure: process.env.NODE_ENV || "production",
-        sameSite: process.env.NODE_ENV ? "None" : "Lax",
+        httpOnly: true,
+        secure: isProduction, // false in localhost
+        sameSite: isProduction ? "None" : "Lax", // Lax for local, None for cross-origin HTTPS
+        maxAge: 3 * 60 * 60 * 1000,
       })
       .json({ message: "User logged in successfully", user: existingUser });
   } catch (err) {
