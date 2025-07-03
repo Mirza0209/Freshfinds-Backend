@@ -28,10 +28,13 @@ app.use(express.json());
 app.use(cookieParser()); // Use cookie-parser
 app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://freshfinds-frontend-gilt.vercel.app", // ✅ use your real Vercel domain
+];
 const corsOptions = {
-  origin: process.env.ORIGIN || "https://freshfinds-frontend-gilt.vercel.app",
+  origin: allowedOrigins,
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 };
 app.use(cors(corsOptions));
 
