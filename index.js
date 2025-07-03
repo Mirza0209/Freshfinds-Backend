@@ -28,7 +28,12 @@ app.use(express.json());
 app.use(cookieParser()); // Use cookie-parser
 app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));
 
-app.use(cors());
+const corsOptions = {
+  origin: process.env.ORIGIN || "*",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+};
+app.use(cors(corsOptions));
 
 // Global error handler
 app.use((err, req, res, next) => {
