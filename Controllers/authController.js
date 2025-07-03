@@ -107,12 +107,15 @@ const login = async (req, res) => {
     await existingUser.save();
 
     const isProduction = process.env.NODE_ENV === "production";
+    const origin = req.headers.origin || "";
+    const isLocalhost = origin.includes("localhost");
+
     res
       .status(200)
       .cookie("token", token, {
         httpOnly: true,
-        secure: isProduction, // false in localhost
-        sameSite: isProduction ? "None" : "Lax", // Lax for local, None for cross-origin HTTPS
+        secure: !isLocalhost, // ✅ false for localhost, true for Vercel/HTTPS
+        sameSite: !isLocalhost ? "None" : "Lax", // ✅ required for cross-origin cookie
         maxAge: 3 * 60 * 60 * 1000,
       })
       .json({ message: "User logged in successfully", user: existingUser });
