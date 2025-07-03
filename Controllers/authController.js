@@ -110,7 +110,7 @@ const login = async (req, res) => {
       .status(200)
       .cookie("token", token, {
         httpOnly: true, // Secure cookie (not accessible from client-side JavaScript)
-        secure: process.env.NODE_ENV === "production",
+        secure: process.env.NODE_ENV || "production",
       })
       .json({ message: "User logged in successfully", user: existingUser });
   } catch (err) {
