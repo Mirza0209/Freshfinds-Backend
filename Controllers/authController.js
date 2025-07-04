@@ -114,9 +114,10 @@ const login = async (req, res) => {
       .status(200)
       .cookie("token", token, {
         httpOnly: true,
-        secure: !isLocalhost, // ✅ false for localhost, true for Vercel/HTTPS
-        sameSite: !isLocalhost ? "None" : "Lax", // ✅ required for cross-origin cookie
-        maxAge: 3 * 60 * 60 * 1000,
+        secure: !isLocalhost, // true on Vercel, false on localhost
+        sameSite: !isLocalhost ? "None" : "Lax", // ensure cross-site usage
+        maxAge: 3 * 60 * 60 * 1000, // **sets persistence**, 3 hours
+        path: "/",
       })
       .json({ message: "User logged in successfully", user: existingUser });
   } catch (err) {
