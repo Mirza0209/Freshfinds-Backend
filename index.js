@@ -33,7 +33,13 @@ const allowedOrigins = [
   "https://freshfinds-frontend-gilt.vercel.app", // ✅ use your real Vercel domain
 ];
 const corsOptions = {
-  origin: allowedOrigins,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
 };
 app.use(cors(corsOptions));
